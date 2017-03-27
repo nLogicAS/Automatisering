@@ -1,4 +1,4 @@
-![Juniper Logo](/Diverse/juniper_logo.jpg)
+![Juniper Logo](https://raw.githubusercontent.com/nLogicAS/Automatisering/master/Juniper/Diverse/juniper_logo.jpg)
 
 # Juniper automatisering
 Juniper har stort fokus på automatisering, da de ser at automatisering effektiviserer og gir svært mange gevinster. Vi har her samlet en del materiale rundt forskjellige former for automatisering på Junos.
