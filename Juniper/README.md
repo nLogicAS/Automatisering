@@ -1,7 +1,7 @@
-![GitHub Logo](/images/logo.png)
+![Juniper Logo](/Diverse/juniper_logo.jpg)
 
 # Juniper automatisering
-Juniper har stort fokus på automatisering, da de ser at automatisering bringer med seg mange fordeler. Vi har her samlet en del materiale rundt forskjellige former for automatisering på Junos.
+Juniper har stort fokus på automatisering, da de ser at automatisering effektiviserer og gir svært mange gevinster. Vi har her samlet en del materiale rundt forskjellige former for automatisering på Junos.
 
 # Mappestruktur og forklaringer
 * __Ansible:__ Alt av Ansible-materiale er samlet her

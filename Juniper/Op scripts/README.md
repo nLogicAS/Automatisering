@@ -1,5 +1,3 @@
-![Juniper logo](/Diverse/juniper_logo.jpg)
-
 # OP scripts
 OP-scripts (Junos Operational scripts) er scripts som enten lagres lokalt på enheten, eller hentes fra en sentral server ved eksekvering. Eksekvering utføres som en brukerstyrt kommando på enheten.
 
