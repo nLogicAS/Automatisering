@@ -9,6 +9,7 @@ Juniper har stort fokus på automatisering, da de ser at automatisering effektiv
 * __Event scripts:__ Alt av Ansible-materiale er samlet her
 * __Junos Space:__ Alt av Ansible-materiale er samlet her
 * __Op scripts:__ Alt av Junos Operational scripts
-* __SNMP scripts:__ Alt av SNMP-scripts er samlet her
 * __OpenConfig:__ Alt relatert til OpenConfig
 * __PyEZ:__ Offisielle python-bindings for kommunikasjon via NETCONF
+* __SNMP scripts:__ Alt av SNMP-scripts er samlet her
+* __Zero Touch Provisioning__ Installasjon av OS og config på fabrikknye bokser via DHCP
