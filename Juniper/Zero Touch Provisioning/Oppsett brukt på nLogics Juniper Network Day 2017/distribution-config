@@ -1,0 +1,88 @@
+root@distrobution> show configuration    
+## Last commit: 1970-01-01 00:03:29 UTC by root
+version 15.1X53-D51;
+system {
+    host-name distrobution;
+    root-authentication {
+        encrypted-password "$5$61bN944W$32RNzUePYKo66AXKB.JnLOcaTIv/lMG3V4BE28zgOA3"; ## SECRET-DATA
+    }
+}
+interfaces {
+    ge-0/0/0 {
+        description "Towards customer";
+        native-vlan-id 10;
+        unit 0 {
+            family ethernet-switching {
+                interface-mode trunk;
+                vlan {
+                    members [ ZTP MANAGEMENT ];
+                }
+            }
+        }
+    }
+    ge-0/0/11 {
+        unit 0 {                        
+            family ethernet-switching {
+                interface-mode access;
+                vlan {
+                    members DHCP-HTTP-SERVER;
+                }
+            }
+        }
+    }
+    irb {
+        unit 10 {
+            description ZTP;
+            family inet {
+                address 10.0.10.1/24;
+            }
+        }
+        unit 20 {
+            description MANAGEMENT;
+            family inet {
+                address 10.0.20.1/24;
+            }
+        }
+        unit 30 {
+            description DHCP-HTTP-SERVER;
+            family inet {
+                address 10.0.30.1/24;
+            }
+        }
+    }
+}
+forwarding-options {
+    dhcp-relay {
+        server-group {
+            ZTP-DHCP {
+                10.0.30.2;
+            }
+        }
+        active-server-group ZTP-DHCP;
+        group ZTP-GROUP {
+            relay-option-82 {
+                circuit-id {
+                    prefix {
+                        host-name;
+                    }
+                }
+            }
+            interface irb.10;           
+        }
+    }
+}
+vlans {
+    DHCP-HTTP-SERVER {
+        vlan-id 30;
+        l3-interface irb.30;
+    }
+    MANAGEMENT {
+        vlan-id 20;
+        l3-interface irb.20;
+    }
+    ZTP {
+        vlan-id 10;
+        l3-interface irb.10;
+    }
+}
+

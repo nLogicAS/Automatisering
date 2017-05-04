@@ -1,0 +1,44 @@
+root@ztp-prov> show configuration 
+## Last commit: 1970-01-01 01:30:31 UTC by root
+version 15.1X53-D56;
+system {
+    host-name ztp-prov;
+    root-authentication {
+        encrypted-password "$5$61bN944W$32RNzUePYKo66AXKB.JnLOcaTIv/lMG3V4BE28zgOA3"; ## SECRET-DATA
+    }
+    services {
+        ssh;
+    }
+}
+interfaces {
+    ge-0/0/11 {
+        unit 0 {
+            family ethernet-switching {
+                interface-mode trunk;
+                vlan {
+                    members MANAGEMENT;
+                }
+            }
+        }
+    }
+    irb {                               
+        unit 20 {
+            description MANAGEMENT;
+            family inet {
+                address 10.0.20.2/24;
+            }
+        }
+    }
+}
+routing-options {
+    static {
+        route 0.0.0.0/0 next-hop 10.0.20.1;
+    }
+}
+vlans {
+    MANAGEMENT {
+        vlan-id 20;
+        l3-interface irb.20;
+    }
+}
+
