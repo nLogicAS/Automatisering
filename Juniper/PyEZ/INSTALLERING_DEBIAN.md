@@ -6,6 +6,8 @@
 5) wget https://bootstrap.pypa.io/get-pip.py -O - | sudo python3
 6) Putt følgende i en fil på debian-installasjonen og kjør den med `python <fil>` eller `python3 <fil>` for å teste at du får data inn via PyEZ-biblioteket.
 
+IP, BRUKER og PASSORD skiftes til det du skal teste mot.
+
     from pprint import pprint
     from jnpr.junos import Device
     dev = Device(host='IP', user='BRUKER', password='PASSORD' )
@@ -13,7 +15,7 @@
     pprint( dev.facts )
     dev.close()
 
-IP, BRUKER og PASSORD skiftes til det du skal teste mot.
+
 
 
 ## Config som må inn på Juniper-noden for å få NETCONF (og dermed PyEZ) til å fungere
