@@ -1,0 +1,10 @@
+---
+
+system:
+  hostname: "{{ inventory_hostname }}"
+
+interface:
+  - name: ge-0/0/10
+    ipv4: 10.0.20.1/24
+    ipv6: 2001:db8:0:20::1/64
+    desc: Managed by Ansible

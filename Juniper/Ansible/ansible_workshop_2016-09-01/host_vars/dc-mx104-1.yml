@@ -1,0 +1,37 @@
+---
+
+system:
+  hostname: "dc-mx104-1"
+
+interface:
+  - name: ge-0/0/0
+    ipv4: 10.0.11.2/24
+    ipv6: 2001:db8:0:11::2/64
+    desc: Managed by Ansible
+  - name: ge-0/0/2
+    ipv4: 10.0.21.2/24
+    ipv6: 2001:db8:0:21::2/64
+    desc: Managed by Ansible
+
+bgp:
+  asn: 65500
+  group:
+    - name: EBGP1
+      peer:
+        - asn: 65510
+          ip: 10.0.11.1
+        - asn: 65520
+          ip: 10.0.21.1
+        - asn: 65530
+          ip: 10.0.31.1
+        - asn: 65540
+          ip: 10.0.41.1
+        - asn: 65510
+          ip: 2001:db8:0:11::1
+        - asn: 65520
+          ip: 2001:db8:0:21::1
+        - asn: 65530
+          ip: 2001:db8:0:31::1
+        - asn: 65540
+          ip: 2001:db8:0:41::1
+

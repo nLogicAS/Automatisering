@@ -1,0 +1,11 @@
+
+[nlogic]
+dc-mx104-1 junos_ip=192.168.160.200 junos_port=22
+g1qfx1 junos_ip=192.168.160.202 junos_port=22
+g1qfx2 junos_ip=192.168.160.203 junos_port=22
+g2qfx1 junos_ip=192.168.160.204 junos_port=22
+g2qfx2 junos_ip=192.168.160.205 junos_port=22
+g3qfx1 junos_ip=192.168.160.206 junos_port=22
+g3qfx2 junos_ip=192.168.160.207 junos_port=22
+g4qfx1 junos_ip=192.168.160.208 junos_port=22
+g4qfx2 junos_ip=192.168.160.209 junos_port=22

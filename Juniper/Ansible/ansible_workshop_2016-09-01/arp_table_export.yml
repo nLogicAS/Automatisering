@@ -1,0 +1,25 @@
+---
+- name: Get facts from Juniper node
+  hosts: nlogic
+  gather_facts: no
+  serial: 1
+  tasks:
+    - junos_command:
+        username: "{{ junos_user }}"
+        password: "{{ junos_password }}"
+        host: "{{ junos_ip }}"
+        port: "{{ junos_port }}"
+        format: xml
+        commands:
+          - show arp
+      register: junos
+
+    - debug: msg="{{ junos }}"
+
+    - set_fact: arp_table="{{ junos.stdout[0]['arp-table-information'] }}"
+
+    - lineinfile:
+        dest: "tmp/arp_table.csv"
+        line: "{{ inventory_hostname }},{{ item['ip-address'] }},{{ item['mac-address'] }},{{ item['interface-name'] }}"
+        create: yes
+      with_items: "{{ arp_table['arp-table-entry'] }}"#

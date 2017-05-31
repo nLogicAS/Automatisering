@@ -1,0 +1,11 @@
+---
+- name: Build BGP config
+  template:
+    src: bgp.json.j2
+    dest: "{{ build_dir }}/bgp.json.conf"
+
+- name: Build OSPF config
+  template:
+    src: ospf.json.j2
+    dest: "{{ build_dir }}/ospf.json.conf"
+    

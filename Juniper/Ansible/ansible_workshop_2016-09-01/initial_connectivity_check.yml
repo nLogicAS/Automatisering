@@ -1,0 +1,17 @@
+---
+- name: Check connectivity
+  hosts: nlogic
+  gather_facts: no
+
+  tasks:
+    - name: Get facts from nodes
+      junos_facts:
+        username: "{{ junos_user }}"
+        password: "{{ junos_password }}"
+        host: "{{ junos_ip }}"
+        port: "{{ junos_port }}"
+        config: no
+        config_format: xml
+      register: junos
+
+    - debug: msg="{{ junos.ansible_facts.hostname }} {{ junos.ansible_facts.serialnumber }}"

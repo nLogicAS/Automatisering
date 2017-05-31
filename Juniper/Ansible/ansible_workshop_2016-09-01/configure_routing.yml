@@ -1,0 +1,40 @@
+---
+- name: Make sure directories exist
+  hosts: nlogic
+  gather_facts: no
+  tasks:
+    - name: Build directory
+      file: path={{ build_dir }} state=directory
+    - name: Output directory
+      file: path={{ output_dir }} state=directory
+
+- name: Generate configuration
+  hosts: nlogic
+  gather_facts: no
+  roles:
+    - build_routing
+
+- name: Assemble all config files
+  hosts: nlogic
+  gather_facts: no
+  tasks:
+    - name: Assembling
+      assemble:
+        src: "{{ build_dir }}"
+        dest: "{{ output_dir }}/routing.json.conf"
+
+#- name: Push config to Junos device
+#  hosts: nlogic
+#  gather_facts: no
+#  tasks:
+#    - name: Installing config
+#      junos_template:
+#         host: "{{ junos_ip }}"
+#         port: "{{ junos_port }}"
+#         username: "{{ junos_user }}"
+#         password: "{{ junos_password }}"
+#         action: merge
+#         comment: "Managed by Ansible"
+#         src: "{{ output_dir }}/routing.json.conf"
+#         logfile: "tmp/debug.log"
+#

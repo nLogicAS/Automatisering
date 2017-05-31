@@ -1,0 +1,23 @@
+---
+- name: Run CLI command on Juniper node
+  hosts: g1qfx1
+  gather_facts: no
+  tasks:
+    - junos_command:
+        username: "{{ junos_user }}"
+        password: "{{ junos_password }}"
+        host: "{{ junos_ip }}"
+        port: "{{ junos_port }}"
+        format: text
+        commands:
+          #- "show version"
+          #- "show ospf route extern 3.1.33.7/32"
+      register: result
+
+    - set_fact: output="{{ result.stdout[0] }}"
+
+    - local_action:
+        module: slack
+        token: <removed>
+        msg: "GROUP1 - {{ inventory_hostname}} {{ output }}"
+      run_once: true

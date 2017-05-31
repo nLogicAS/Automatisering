@@ -1,0 +1,59 @@
+{% if interface is defined %}
+system {
+    host-name {{ system.hostname | default('qfx-ansible') }};
+}
+interfaces {
+{% for intf in interface %}
+	replace:
+    {{ intf.name }} {
+        unit 0 {
+        	description "{{ intf.desc|default("Managed by Ansible") }}";
+            family inet {
+                address {{ intf.ipv4 }};
+            }
+{% if intf.ipv6 is defined %}
+            family inet6 {
+                address {{ intf.ipv6 }};
+            }   
+{% endif %}
+        }
+    }
+{% endfor %}
+}
+{% endif %}
+
+
+
+
+{% if bgp is defined %}
+routing-options {
+{% if bgp.asn is defined %}
+    autonomous-system {{ bgp.asn }};
+{% endif %}
+}
+protocols {
+    bgp {
+{% for group in bgp.group %}
+        replace:
+        group {{ group.name }} {
+            type external;
+{% for peer in group.peer %}
+            neighbor {{ peer.ip }} {
+                peer-as {{ peer.asn }};
+                export INJ_BGP;
+            }
+{% endfor %}
+{% endfor %}
+        }
+    }
+}
+policy-options {
+    replace:
+    policy-statement INJ_BGP {
+        term PROTO_STATIC {
+            from protocol static;
+        }
+        then accept;
+    }
+}
+{% endif %}

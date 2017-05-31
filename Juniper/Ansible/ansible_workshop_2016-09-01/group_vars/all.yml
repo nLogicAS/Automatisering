@@ -1,0 +1,8 @@
+---
+ansible_connection: local
+
+junos_user: root
+junos_password: Ansible
+
+build_dir: "build/{{ ansible_host }}"
+output_dir: "output/{{ ansible_host }}"

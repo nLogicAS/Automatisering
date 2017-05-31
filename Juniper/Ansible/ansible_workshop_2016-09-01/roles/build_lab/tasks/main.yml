@@ -1,0 +1,5 @@
+---
+- name: Build lab config
+  template:
+    src: lab.json.j2
+    dest: "{{ build_dir }}/lab.json.conf"

@@ -1,0 +1,23 @@
+{% if bgp is defined %}
+routing-options {
+{% if bgp.asn is defined %}
+    /* Managed by Ansible */
+    autonomous-system {{ bgp.asn }};
+{% endif %}
+}
+protocols {
+    /* Managed by Ansible */
+    bgp {
+{% for group in bgp.group %}
+        group {{ group.name }} {
+            type external;
+{% for peer in group.peer %}
+            neighbor {{ peer.ip }} {
+                peer-as {{ peer.asn }};
+            }
+{% endfor %}
+{% endfor %}
+		}
+	}
+}
+{% endif %}

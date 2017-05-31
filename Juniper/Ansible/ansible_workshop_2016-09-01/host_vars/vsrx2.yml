@@ -1,0 +1,22 @@
+---
+
+system:
+  hostname: VSRX2-ANS
+
+ospf:
+  id: 10.0.0.2
+  area:
+    - id: 0.0.0.0
+      interface:
+        - name: ge0/0/1.0
+        - name: ge0/0/2.0
+
+bgp:
+  asn: 65510
+  group:
+    - name: EBGP1
+      peer:
+        - asn: 65500
+          ip: 10.99.23.3
+        - asn: 12345
+          ip: 12.3.4.5

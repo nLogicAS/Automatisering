@@ -1,0 +1,14 @@
+---
+
+system:
+  hostname: VSRX3-ANS
+
+bgp:
+  asn: 65500
+  group:
+    - name: EBGP1
+      peer:
+        - asn: 65510
+          ip: 10.99.23.2
+        - asn: 54321
+          ip: 5.4.3.21

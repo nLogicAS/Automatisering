@@ -1,0 +1,29 @@
+{% if ospf is defined %}
+routing-options {
+{% if ospf.id is defined %}
+    /* Managed by Ansible */
+    router-id {{ ospf.id }};
+{% endif %}
+}
+protocols {
+    /* Managed by Ansible */
+    ospf {
+{% if ospf.export is defined %}
+        export {{ ospf.export }};
+{% endif %}
+{% for area in ospf.area %}
+        area {{ area.id }} {
+{% for intf in area.interface %}
+{% if intf.passive is not defined %}
+            interface {{ intf.name }};
+{% else %}
+            interface {{ intf.name }} {
+                passive;
+            }
+{% endif %}
+{% endfor %}
+        }
+{% endfor %}
+    }
+}
+{% endif %}
