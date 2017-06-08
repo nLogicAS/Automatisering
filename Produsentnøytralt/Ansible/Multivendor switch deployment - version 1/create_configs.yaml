@@ -1,0 +1,7 @@
+---
+
+- name: Generate configuration
+  hosts: example-topology
+  gather_facts: no
+  roles:
+    - build_config

@@ -1,0 +1,74 @@
+hostname {{ misc.hostname }}
+
+enable secret 5 <something>
+enable secret 7 <something>
+
+
+ip subnet-zero
+ip routing
+ipv6 unicast-routing
+
+!
+! VLANS
+!
+{% for vlan_id, vlan_desc in vlans.iteritems() %}
+vlan {{ vlan_id }}
+ name {{ vlan_desc|replace(" ", "_") }}
+{% endfor %}
+
+!
+! UPLINK INTERFACES
+!
+{% set loop_index = 1 %}
+{% for uplink in uplinks %}
+  {% if uplink.mode == "lacp" %}
+
+interface Port-channel{{ loop_index }}
+ description ### Uplink towards {{ uplink.towards }} ###
+ switchport mode trunk
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan all 
+!
+    {% for interface_number in uplink.interfaces %}
+
+interface GigabitEthernet{{ interface_number }}
+ description Member of Port-channel{{ loop_index }}
+ switchport trunk allowed vlan all 
+ switchport mode trunk
+ channel-group {{ loop_index }} mode active
+!
+    {% endfor %}
+    {% set loop_index = loop_index + 1 %}
+  {% else %}
+
+interface GigabitEthernet{{ uplink.interfaces[0] }}
+ description ### Uplink towards {{ uplink.towards }} ###
+ switchport mode trunk
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan all
+!
+  {% endif %}
+{% endfor %}
+
+!
+! ACCESS INTERFACES
+!
+{% for interface in interfaces %}
+interface GigabitEthernet{{ interface.name }}
+ description ### Access vlan {{ interface.vlan }} / {{ interface.desc }} ###
+ switchport access vlan {{ interface.vlan }}
+ switchport mode access
+!
+{% endfor %}
+
+!
+! MANAGEMENT VLAN
+!
+interface Vlan{{ mgmt.vlan_id }}
+ description ### management ###
+ ip address {{mgmt.v4_address}} {{ mgmt.v4_subnet }}
+ ipv6 address {{ mgmt.v6_address }}/{{ mgmt.v6_subnet }}
+!
+
+ip default-gateway {{ mgmt.v4_gateway }}
+ipv6 route ::/0 {{ mgmt.v6_gateway }}

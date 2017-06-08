@@ -1,0 +1,5 @@
+---
+- name: Build lab config
+  template:
+    src: "{{ vendor }}_{{ model }}.j2"
+    dest: "config/{{ inventory_hostname }}.conf"

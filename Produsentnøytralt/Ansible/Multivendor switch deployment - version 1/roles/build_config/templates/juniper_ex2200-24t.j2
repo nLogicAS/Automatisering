@@ -1,0 +1,122 @@
+system {
+    host-name {{ misc.hostname }};
+    root-authentication {
+        encrypted-password "<something>";
+    }
+}
+
+
+/* UPLINK INTERFACES */
+{% set loop_index = 0 %}
+interfaces {
+{% for uplink in uplinks %}
+{% if uplink.mode == "lacp" %}
+    ae{{ loop_index }} {
+        description "### Uplink towards {{ uplink.towards }} ###";
+        aggregated-ether-options {
+            lacp {
+                active;
+            }
+        }
+        unit 0 {
+            family ethernet-switching {
+                port-mode trunk;
+                vlan {
+                    members all;
+                }
+            }
+        }
+    }
+{% for interface_number in uplink.interfaces %}
+    ge-{{ misc.stack_member }}/{{ interface_number }} {
+        description "Member of ae{{ loop_index }}";
+        ether-options {
+            802.3ad ae{{ loop_index }};
+        }
+    }
+{% endfor %}
+{% set loop_index = loop_index + 1 %}
+{% else %}
+    ge-{{ misc.stack_member }}/{{ uplink.interfaces[0] }} {
+        description "### Uplink towards {{ uplink.towards }} ###";
+        unit 0 {
+            family ethernet-switching {
+                port-mode trunk;
+                vlan {
+                    members all;              
+                }
+            }
+        }
+        
+    }
+{% endif %}
+{% endfor %}
+}
+
+interfaces {
+{% for interface in interfaces %}    
+    ge-{{ misc.stack_member }}/{{ interface.name }} {
+        description "{{ interface.desc }}";
+        unit 0 {
+            family ethernet-switching {
+                port-mode access;
+                vlan {
+                    members v{{ interface.vlan }};
+                }
+            }
+        }
+    }
+{% endfor %}
+}
+
+
+chassis {
+    aggregated-devices {
+        ethernet {
+            device-count {{ uplinks|length }};
+        }
+    }
+}
+
+
+/* VLAN CONFIG */
+vlans {
+{% for vlan_id, vlan_desc in vlans.iteritems() %}
+    v{{ vlan_id }} {
+        description "{{ vlan_desc }}";
+        vlan-id {{ vlan_id }};
+    }
+{% endfor %}
+}
+
+
+/* MANAGEMENT */
+vlans {
+    v{{ mgmt.vlan_id }} {
+        l3-interface vlan.{{ mgmt.vlan_id }};
+    }
+}
+interfaces {
+    vlan {
+        unit {{ mgmt.vlan_id }} {
+            family inet {
+                address {{ mgmt.v4_address }}/{{ mgmt.v4_subnet }};
+            }
+            family inet6 {
+                address {{ mgmt.v6_address }}/{{ mgmt.v6_subnet }};
+            }
+        }
+    }
+}
+routing-options {
+    rib inet.0 {
+        static {
+            route 0.0.0.0/0 next-hop {{ mgmt.v4_gateway }};
+        }
+    }
+    rib inet6.0 {
+        static {
+            route ::/0 next-hop {{ mgmt.v6_gateway }};
+        }
+    }
+}

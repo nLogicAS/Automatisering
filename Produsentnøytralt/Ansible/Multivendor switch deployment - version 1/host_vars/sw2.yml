@@ -1,0 +1,42 @@
+---
+
+# Cisco WS-C3560G-48PS
+
+uplinks:
+  - towards: core
+    interfaces:
+      - 0/51
+      - 0/52
+    interface_bandwidth: 1G
+    mode: lacp
+  - towards: sw2
+    interfaces:
+      - 0/50
+    interface_bandwidth: 1G
+    mode: single
+
+misc:
+  hostname: "{{ inventory_hostname }}"
+  stack_member: 0
+
+mgmt:
+  vlan_id: 30
+  v4_address: 10.0.100.102
+  v4_subnet: 255.255.255.0
+  v4_gateway: 10.0.100.1
+  v6_address: 2001:DB8::1002
+  v6_subnet: 64
+  v6_gateway: 2001:DB8::1
+
+vlans:
+  10: "VLAN 10 desc"
+  20: "VLAN 20 desc"
+  30: "mgmt"
+
+interfaces:
+  - name: 0/0
+    desc: Test 1
+    vlan: 10
+  - name: 0/1
+    desc: Test 2
+    vlan: 20

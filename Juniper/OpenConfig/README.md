@@ -10,17 +10,20 @@ Junipers Junos har hatt støtte for OpenConfig siden release 16.1, og har fått 
 
 # Krav for å kunne bruke OpenConfig på en Juniper-enhet
 OpenConfig-modul må installeres på enheten som skal støtte OpenConfig. Gjøres på samme vis som når man skal installere Junos-versjon.
-> request system software add junos-openconfig-x86-32-XX.YY.ZZ.JJ.tgz
+```
+request system software add junos-openconfig-x86-32-XX.YY.ZZ.JJ.tgz
+```
 
 NETCONF må aktiveres på enheten for å kunne kommunisere med enheten via RPC.
-    system {
-        services {
-            netconf {
-                ssh;
-            }
+```
+system {
+    services {
+        netconf {
+            ssh;
         }
     }
-
+}
+```
 
 # Linker
 * http://openconfig.net
